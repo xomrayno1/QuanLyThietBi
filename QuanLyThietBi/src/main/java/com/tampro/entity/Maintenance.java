@@ -1,12 +1,14 @@
 package com.tampro.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -22,6 +24,20 @@ public class Maintenance {
 	private Date createDate;
 	private Date updateDate;
 	private int activeFlag;
+	private String name ;
+	@OneToMany(mappedBy = "maintenance")
+	private List<MaintenanceDetail> list;
+	
+	
+	
+	
+	public Maintenance(int id) {
+		super();
+		this.id = id;
+	}
+	public Maintenance() {
+		super();
+	}
 	public int getId() {
 		return id;
 	}
@@ -64,6 +80,19 @@ public class Maintenance {
 	public void setActiveFlag(int activeFlag) {
 		this.activeFlag = activeFlag;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<MaintenanceDetail> getList() {
+		return list;
+	}
+	public void setList(List<MaintenanceDetail> list) {
+		this.list = list;
+	}
+	
 	
 	
 }

@@ -16,11 +16,22 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	private String description;
 	@Temporal(TemporalType.DATE)
 	private Date createDate;
 	@Temporal(TemporalType.DATE)
 	private Date updateDate;
 	private int activeFlag;
+	
+	
+	
+	
+	public Category() {
+		
+	}
+	public Category(int id) {
+		this.id = id;
+	}
 	public int getId() {
 		return id;
 	}
@@ -50,6 +61,12 @@ public class Category {
 	}
 	public void setActiveFlag(int activeFlag) {
 		this.activeFlag = activeFlag;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	

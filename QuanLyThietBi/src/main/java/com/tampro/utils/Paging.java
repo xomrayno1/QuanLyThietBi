@@ -35,7 +35,7 @@ public class Paging {
 		this.offSet = offSet;
 	}
 	public long getTotalPage() {
-		this.totalPage = Math.round(totalProduct / (double) numberPerPage);
+		this.totalPage = (long) Math.ceil(totalProduct / (double) numberPerPage);
 		return totalPage;
 	}
 	public void setTotalPage(long totalPage) {

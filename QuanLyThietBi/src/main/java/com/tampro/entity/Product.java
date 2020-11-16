@@ -1,6 +1,7 @@
 package com.tampro.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,11 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Product {
@@ -26,14 +25,24 @@ public class Product {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	private String imageUrl;
-	@Transient
-	private MultipartFile multipartFile;
 	private String description;
 	@Temporal(TemporalType.DATE)
 	private Date createDate;
 	@Temporal(TemporalType.DATE)
 	private Date updateDate;
 	private int activeFlag;
+	@OneToMany(mappedBy = "product")
+	private List<ProductStock> list;
+	
+	
+	public Product() {
+		
+	}
+	
+	public Product(int id) {
+		super();
+		this.id = id;
+	}
 	public int getId() {
 		return id;
 	}
@@ -64,12 +73,7 @@ public class Product {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	public MultipartFile getMultipartFile() {
-		return multipartFile;
-	}
-	public void setMultipartFile(MultipartFile multipartFile) {
-		this.multipartFile = multipartFile;
-	}
+
 	public String getDescription() {
 		return description;
 	}

@@ -1,5 +1,6 @@
 package com.tampro.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -21,13 +22,14 @@ public class ProductStock {
 	private Product product;
 	@ManyToOne
 	@JoinColumn(name = "stock_id")
-	private Stock stock;
+	private Inventory stock;
 	private int quantity;
 	@Temporal(TemporalType.DATE)
 	private Date createDate;
 	@Temporal(TemporalType.DATE)
 	private Date updateDate;
 	private int activeFlag;
+	private BigDecimal price;
 	
 	
 	public int getId() {
@@ -61,10 +63,10 @@ public class ProductStock {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public Stock getStock() {
+	public Inventory getStock() {
 		return stock;
 	}
-	public void setStock(Stock stock) {
+	public void setStock(Inventory stock) {
 		this.stock = stock;
 	}
 	public int getQuantity() {
@@ -73,5 +75,12 @@ public class ProductStock {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	
 	
 }

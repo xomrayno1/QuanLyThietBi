@@ -9,10 +9,13 @@ import java.util.regex.Pattern;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tampro.dao.BaseDAO;
 import com.tampro.utils.Paging;
-
+@Repository
+@Transactional(rollbackFor = Exception.class)
 public class BaseDAOImpl<E> implements BaseDAO<E> {
 	@Autowired
 	SessionFactory factory;
@@ -27,14 +30,22 @@ public class BaseDAOImpl<E> implements BaseDAO<E> {
 		// TODO Auto-generated method stub
 		StringBuilder queryBuild = new StringBuilder();
 		StringBuilder queryCount = new StringBuilder();
-		queryBuild.append("FROM ").append(getGenericName()).append(" where activeFlag = 1 ");
-		queryCount.append("SELECT Count(*) FROM ").append(getGenericName()).append(" where activeFlag = 1 ");
+		queryBuild.append("FROM ").append(getGenericName()).append(" as model where model.activeFlag = 1 ");
+		queryCount.append("SELECT COUNT(*) FROM ").append(getGenericName()).append(" as model where model.activeFlag = 1 ");
 		if(queryStr != null && mapParams != null) {
 			queryBuild.append(queryStr);
 			queryCount.append(queryStr);
 		}
+		System.out.println(queryBuild);
+		System.out.println(queryCount);
 		Query<E> queryList = factory.getCurrentSession().createQuery(queryBuild.toString());
 		Query<E> queryNumber = factory.getCurrentSession().createQuery(queryCount.toString());
+		if(mapParams != null ) {
+			for(String key : mapParams.keySet()) {
+				queryList.setParameter(key, mapParams.get(key));
+				queryNumber.setParameter(key, mapParams.get(key));
+			}
+		}
 		if(paging != null) {
 			long count = (Long) queryNumber.uniqueResult();
 			paging.setTotalProduct(count);
@@ -47,7 +58,9 @@ public class BaseDAOImpl<E> implements BaseDAO<E> {
 	public List<E> findByProperty(String property, Object object) {
 		StringBuilder queryBuild = new StringBuilder();
 		queryBuild.append("FROM ").append(getGenericName()).append(" where activeFlag = 1 ")
-		.append(" and ").append(property).append(" = :").append(property);
+		.append(" and ").append(property);
+		property = property.replace(".", "");
+		queryBuild.append(" = :").append(property);
 		Query<E> queryList = factory.getCurrentSession().createQuery(queryBuild.toString());
 		queryList.setParameter(property, object);
 		return queryList.getResultList();
@@ -55,16 +68,19 @@ public class BaseDAOImpl<E> implements BaseDAO<E> {
 
 	public void insert(E e) {
 		// TODO Auto-generated method stub
+		System.out.println("-------------insert---------------");
 		factory.getCurrentSession().persist(e);
 	}
 
 	public void update(E e) {
 		// TODO Auto-generated method stub
+		System.out.println("-------------update---------------");
 		factory.getCurrentSession().merge(e);
 	}
 
 	public void delete(E e) {
 		// TODO Auto-generated method stub
+		System.out.println("-------------delete---------------");
 		factory.getCurrentSession().merge(e);
 	}
 

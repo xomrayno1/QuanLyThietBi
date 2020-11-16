@@ -1,5 +1,6 @@
 package com.tampro.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -22,10 +23,15 @@ public class Invoice {
 	@OneToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	private int price;
+	private BigDecimal price;
 	private Date createDate;
 	private Date updateDate;
 	private int activeFlag;
+	private int quantity;
+	@OneToOne
+	@JoinColumn(name = "inven_id")
+	private Inventory inventory;
+	
 	public int getId() {
 		return id;
 	}
@@ -50,12 +56,6 @@ public class Invoice {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public int getPrice() {
-		return price;
-	}
-	public void setPrice(int price) {
-		this.price = price;
-	}
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -73,6 +73,24 @@ public class Invoice {
 	}
 	public void setActiveFlag(int activeFlag) {
 		this.activeFlag = activeFlag;
+	}
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public Inventory getInventory() {
+		return inventory;
+	}
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 
 }
